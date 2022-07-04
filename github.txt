@@ -1,0 +1,28 @@
+----------------------FIRST TIME----------------------------
+
+git init
+git add .
+git commit -m "first commit"
+git remote add origin https://github.com/Raj2710/SAMPL.git
+git push -u origin master
+
+
+----------------------OTHERWISE----------------------------	
+git add .
+git commit -m "Commit message"
+git push
+
+-----------------------To Commit in different branch for first time-----------
+
+git init
+git add .
+git commit -m "first commit"
+git branch -M branchname
+git remote add origin https://github.com/Raj2710/SAMPL.git
+git push -u origin branchname
+
+-----------------------To Commit in different branch not for first time-----------
+git add .
+git commit -m "Commit message"
+git branch -M branchname
+git push -u origin branchname
