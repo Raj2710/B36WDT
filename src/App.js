@@ -76,6 +76,7 @@ function App() {
             return  <PriceCard data={e} key={i}/>
           })
         }
+        
     </div>
   </div>
 </section>
