@@ -72,8 +72,8 @@ function App() {
   <div className="container">
     <div className="row">
         {
-          data.map((e)=>{
-            return  <PriceCard data={e}/>
+          data.map((e,i)=>{
+            return  <PriceCard data={e} key={i}/>
           })
         }
     </div>
