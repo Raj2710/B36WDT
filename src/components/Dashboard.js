@@ -1,9 +1,12 @@
 import React from 'react'
+import Table from 'react-bootstrap/Table'
+import Button from 'react-bootstrap/Button';
+import {Link} from 'react-router-dom';
 
 function Dashboard(props) {
     console.log(props.data)
   return <>
-    <div id="content-wrapper" className="d-flex flex-column">
+    <div id="content-wrapper" className="d-flex flex-column container-fluid">
 
 {/* <!-- Main Content --> */}
 <div id="content">
@@ -14,7 +17,7 @@ function Dashboard(props) {
         {/* <!-- Page Heading --> */}
         <div className="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 className="h3 mb-0 text-gray-800">Dashboard</h1>
-            <a href="#" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            <a href="#!" className="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
                     className="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
         </div>
 
@@ -29,7 +32,7 @@ function Dashboard(props) {
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Earnings (Monthly)</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">{props.data.monthly}</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">{props.data.data.monthly}</div>
                             </div>
                             <div className="col-auto">
                                 <i className="fas fa-calendar fa-2x text-gray-300"></i>
@@ -47,7 +50,7 @@ function Dashboard(props) {
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     Earnings (Annual)</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">{props.data.annual}</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">{props.data.data.annual}</div>
                             </div>
                             <div className="col-auto">
                                 <i className="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -67,7 +70,7 @@ function Dashboard(props) {
                                 </div>
                                 <div className="row no-gutters align-items-center">
                                     <div className="col-auto">
-                                        <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{props.data.task}%</div>
+                                        <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{props.data.data.task}%</div>
                                     </div>
                                     <div className="col">
                                         <div className="progress progress-sm mr-2">
@@ -75,7 +78,7 @@ function Dashboard(props) {
                                                 style={"width": "50%" aria-valuenow="50" aria-valuemin="0"
                                                 aria-valuemax="100"}></div> */}
                                                 <div className='progress-bar bg-info' role="progressbar"
-                                                style={{"width":`${props.data.task}%`, "aria-valuenow":props.data.task,"aria-valuemin":"0","aria-valuemax":"100"}}
+                                                style={{"width":`${props.data.data.task}%`, "ariaValuenow":props.data.data.task,"ariaValuemin":"0","ariaValuemax":"100"}}
                                                 ></div>
                                         </div>
                                     </div>
@@ -97,7 +100,7 @@ function Dashboard(props) {
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Pending Requests</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">{props.data.pending}</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">{props.data.data.pending}</div>
                             </div>
                             <div className="col-auto">
                                 <i className="fas fa-comments fa-2x text-gray-300"></i>
@@ -111,6 +114,42 @@ function Dashboard(props) {
 
 </div>
 {/* <!-- End of Main Content --> */}
+
+
+{/* Start of the Student details */}
+<div>
+<Table striped bordered hover>
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Mobile</th>
+          <th>Batch</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+            props.data.students.map((e,i)=>{
+                return <tr key={i}>
+                    <td>{i+1}</td>
+                    <td>{e.name}</td>
+                    <td>{e.email}</td>
+                    <td>{e.mobile}</td>
+                    <td>{e.batch}</td>
+                    <td>
+                        <Link to='/edit-student'><Button variant="primary">Edit</Button></Link>
+                        &nbsp;&nbsp;
+                        <Button variant="danger">Delete</Button>
+                    </td>
+                </tr>
+            })
+        }
+      </tbody>
+    </Table>                                         
+</div>
+{/* End of the Student details */}
 
 {/* <!-- Footer --> */}
 <footer className="sticky-footer bg-white">
