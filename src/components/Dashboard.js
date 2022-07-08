@@ -1,10 +1,15 @@
 import React from 'react'
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button';
-import {Link} from 'react-router-dom';
+import {Link,useNavigate} from 'react-router-dom';
 
 function Dashboard(props) {
-    console.log(props.data)
+    let navigate = useNavigate();
+    let handleDelete = (i)=>{
+        let students = [...props.data.students];
+        students.splice(i,1);
+        props.data.setStudents(students)
+    }
   return <>
     <div id="content-wrapper" className="d-flex flex-column container-fluid">
 
@@ -139,9 +144,9 @@ function Dashboard(props) {
                     <td>{e.mobile}</td>
                     <td>{e.batch}</td>
                     <td>
-                        <Link to='/edit-student'><Button variant="primary">Edit</Button></Link>
+                        <Button variant="primary" onClick={()=>navigate(`/edit-student/${i}`)}>Edit</Button>
                         &nbsp;&nbsp;
-                        <Button variant="danger">Delete</Button>
+                        <Button variant="danger" onClick={()=>handleDelete(i)}>Delete</Button>
                     </td>
                 </tr>
             })

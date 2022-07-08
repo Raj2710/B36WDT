@@ -5,6 +5,7 @@ import Dashboard from './components/Dashboard';
 import {BrowserRouter,Routes,Route} from 'react-router-dom';
 import CreateStudent from './components/CreateStudent';
 import EditStudent from './components/EditStudent';
+import Button from 'react-bootstrap/Button';
 
 function App() {
   let data = {
@@ -13,6 +14,7 @@ function App() {
     task:70,
     pending:18
   }
+
 
   let [students,setStudents] =useState([
     {
@@ -34,15 +36,18 @@ function App() {
       batch:"B36WE",
     }
   ])
+
   return <>
   <div className='main-wrapper'>
+
+      {/* <Button variant='primary' onClick={()=>setStudents([...students])}>Click Here!</Button> */}
   
       <BrowserRouter>
       <Sidebar/>
           <Routes>
               <Route path='dashboard' element={<Dashboard data={{data,students,setStudents}}/>}/>
-              <Route path='create-student' element={<CreateStudent/>}/>
-              <Route path='edit-student' element={<EditStudent/>}/>
+              <Route path='create-student' element={<CreateStudent data={{students,setStudents}}/>}/>
+              <Route path='edit-student/:id' element={<EditStudent data={{students,setStudents}}/>}/>
               <Route path='*' element={<Dashboard data={{data,students,setStudents}}/>}/>
           </Routes>
       </BrowserRouter>
