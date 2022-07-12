@@ -7,7 +7,6 @@ import {StudentContext} from '../App'
 function CreateStudent() {
 
   let context = useContext(StudentContext)
-
   let [name,setName] = useState("");
   let [email,setEmail] = useState("");
   let [mobile,setMobile] = useState("");
