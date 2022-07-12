@@ -1,15 +1,18 @@
-import React,{useState}  from 'react'
+import React,{useState,useContext}  from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import {useNavigate,useParams} from 'react-router-dom';
+import {StudentContext} from '../App'
 
-function EditStudent(props) {
+function EditStudent() {
   let params = useParams();
 
-  let [name,setName] = useState(props.data.students[params.id].name);
-  let [email,setEmail] = useState(props.data.students[params.id].email);
-  let [mobile,setMobile] = useState(props.data.students[params.id].mobile);
-  let [batch,setBatch] = useState(props.data.students[params.id].batch);
+  let context = useContext(StudentContext);
+
+  let [name,setName] = useState(context.students[params.id].name);
+  let [email,setEmail] = useState(context.students[params.id].email);
+  let [mobile,setMobile] = useState(context.students[params.id].mobile);
+  let [batch,setBatch] = useState(context.students[params.id].batch);
 
   let navigate = useNavigate();
 
@@ -21,11 +24,11 @@ function EditStudent(props) {
         batch
       }
 
-      let students = [...props.data.students]
+      let students = [...context.students]
 
       students.splice(params.id,1,data)
 
-      props.data.setStudents(students)
+      context.setStudents(students)
       
       //Just to jump to different route
       navigate('/dashboard')

@@ -1,11 +1,12 @@
 import './App.css';
-import { useState } from 'react';
+import React,{ useState } from 'react';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
-import {BrowserRouter,Routes,Route} from 'react-router-dom';
+import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom';
 import CreateStudent from './components/CreateStudent';
 import EditStudent from './components/EditStudent';
-import Button from 'react-bootstrap/Button';
+
+export const StudentContext = React.createContext();
 
 function App() {
   let data = {
@@ -16,7 +17,7 @@ function App() {
   }
 
 
-  let [students,setStudents] =useState([
+  let [students,setStudents] = useState([
     {
       name:"Raj",
       email:"raj@gmail.com",
@@ -44,12 +45,14 @@ function App() {
   
       <BrowserRouter>
       <Sidebar/>
+      <StudentContext.Provider value ={{data,students,setStudents}}>
           <Routes>
-              <Route path='dashboard' element={<Dashboard data={{data,students,setStudents}}/>}/>
-              <Route path='create-student' element={<CreateStudent data={{students,setStudents}}/>}/>
-              <Route path='edit-student/:id' element={<EditStudent data={{students,setStudents}}/>}/>
-              <Route path='*' element={<Dashboard data={{data,students,setStudents}}/>}/>
+              <Route path='dashboard' element={<Dashboard/>}/>
+              <Route path='create-student' element={<CreateStudent/>}/>
+              <Route path='edit-student/:id' element={<EditStudent/>}/>
+              <Route path='*' element={<Navigate to='/dashboard'/>}/>
           </Routes>
+        </StudentContext.Provider>
       </BrowserRouter>
   </div>
   </>

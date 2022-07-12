@@ -1,14 +1,20 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button';
-import {Link,useNavigate} from 'react-router-dom';
+import {useNavigate} from 'react-router-dom';
+import {StudentContext} from '../App';
 
-function Dashboard(props) {
+function Dashboard() {
+
+    let context = useContext(StudentContext);
+
+    // console.log("Context",context)
+
     let navigate = useNavigate();
     let handleDelete = (i)=>{
-        let students = [...props.data.students];
+        let students = [...context.students];
         students.splice(i,1);
-        props.data.setStudents(students)
+        context.setStudents(students)
     }
   return <>
     <div id="content-wrapper" className="d-flex flex-column container-fluid">
@@ -37,7 +43,7 @@ function Dashboard(props) {
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-primary text-uppercase mb-1">
                                     Earnings (Monthly)</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">{props.data.data.monthly}</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">{context.data.monthly}</div>
                             </div>
                             <div className="col-auto">
                                 <i className="fas fa-calendar fa-2x text-gray-300"></i>
@@ -55,7 +61,7 @@ function Dashboard(props) {
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-success text-uppercase mb-1">
                                     Earnings (Annual)</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">{props.data.data.annual}</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">{context.data.annual}</div>
                             </div>
                             <div className="col-auto">
                                 <i className="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -75,7 +81,7 @@ function Dashboard(props) {
                                 </div>
                                 <div className="row no-gutters align-items-center">
                                     <div className="col-auto">
-                                        <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{props.data.data.task}%</div>
+                                        <div className="h5 mb-0 mr-3 font-weight-bold text-gray-800">{context.data.task}%</div>
                                     </div>
                                     <div className="col">
                                         <div className="progress progress-sm mr-2">
@@ -83,7 +89,7 @@ function Dashboard(props) {
                                                 style={"width": "50%" aria-valuenow="50" aria-valuemin="0"
                                                 aria-valuemax="100"}></div> */}
                                                 <div className='progress-bar bg-info' role="progressbar"
-                                                style={{"width":`${props.data.data.task}%`, "ariaValuenow":props.data.data.task,"ariaValuemin":"0","ariaValuemax":"100"}}
+                                                style={{"width":`${context.data.task}%`, "ariaValuenow":context.data.task,"ariaValuemin":"0","ariaValuemax":"100"}}
                                                 ></div>
                                         </div>
                                     </div>
@@ -105,7 +111,7 @@ function Dashboard(props) {
                             <div className="col mr-2">
                                 <div className="text-xs font-weight-bold text-warning text-uppercase mb-1">
                                     Pending Requests</div>
-                                <div className="h5 mb-0 font-weight-bold text-gray-800">{props.data.data.pending}</div>
+                                <div className="h5 mb-0 font-weight-bold text-gray-800">{context.data.pending}</div>
                             </div>
                             <div className="col-auto">
                                 <i className="fas fa-comments fa-2x text-gray-300"></i>
@@ -136,7 +142,7 @@ function Dashboard(props) {
       </thead>
       <tbody>
         {
-            props.data.students.map((e,i)=>{
+            context.students.map((e,i)=>{
                 return <tr key={i}>
                     <td>{i+1}</td>
                     <td>{e.name}</td>

@@ -1,10 +1,13 @@
-import React,{useState}  from 'react'
+import React,{useState,useContext}  from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import {useNavigate} from 'react-router-dom';
+import {StudentContext} from '../App'
 
-function CreateStudent(props) {
-  console.log(props.data)
+function CreateStudent() {
+
+  let context = useContext(StudentContext)
+
   let [name,setName] = useState("");
   let [email,setEmail] = useState("");
   let [mobile,setMobile] = useState("");
@@ -23,9 +26,9 @@ function CreateStudent(props) {
       // students.push(data)
       // props.data.setStudents(students)
 
-      let students = [...props.data.students];
+      let students = [...context.students];
       students.push(data)
-      props.data.setStudents(students)
+      context.setStudents(students)
 
       //Just to jump to different route
       navigate('/dashboard')
