@@ -12,7 +12,6 @@ function CreateStudent() {
   let [email,setEmail] = useState("");
   let [mobile,setMobile] = useState("");
   let [batch,setBatch] = useState("");
-
   let navigate = useNavigate();
 
   let handleSubmit = ()=>{
