@@ -1,4 +1,4 @@
-import React,{useState,useContext}  from 'react'
+import React,{useState,useContext, useEffect}  from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import {useNavigate,useParams} from 'react-router-dom';
@@ -8,11 +8,21 @@ function EditStudent() {
   let params = useParams();
 
   let context = useContext(StudentContext);
-
   let [name,setName] = useState(context.students[params.id].name);
   let [email,setEmail] = useState(context.students[params.id].email);
   let [mobile,setMobile] = useState(context.students[params.id].mobile);
   let [batch,setBatch] = useState(context.students[params.id].batch);
+
+
+
+  // useEffect(()=>{
+  //     setName(context.students[params.id].name)
+  //     setEmail(context.students[params.id].email)
+  //     setMobile(context.students[params.id].mobile)
+  //     setBatch(context.students[params.id].batch)
+
+  //     console.log("Use effect called")
+  // },[batch])
 
   let navigate = useNavigate();
 

@@ -5,10 +5,12 @@ import Dashboard from './components/Dashboard';
 import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom';
 import CreateStudent from './components/CreateStudent';
 import EditStudent from './components/EditStudent';
+import HooksDemo from './components/HooksDemo';
 
 export const StudentContext = React.createContext();
 
 function App() {
+  // console.log(students)
   let data = {
     monthly:"Rs. 40,000",
     annual:"Rs. 4,80,000",
@@ -50,6 +52,7 @@ function App() {
               <Route path='dashboard' element={<Dashboard/>}/>
               <Route path='create-student' element={<CreateStudent/>}/>
               <Route path='edit-student/:id' element={<EditStudent/>}/>
+              <Route path='hooks-demo' element={<HooksDemo/>}/>
               <Route path='*' element={<Navigate to='/dashboard'/>}/>
           </Routes>
         </StudentContext.Provider>
