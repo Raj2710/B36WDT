@@ -6,6 +6,7 @@ import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom';
 import CreateStudent from './components/CreateStudent';
 import EditStudent from './components/EditStudent';
 import HooksDemo from './components/HooksDemo';
+export const url = 'https://61ee1f7ed593d20017dbac50.mockapi.io/students'
 
 export const StudentContext = React.createContext();
 

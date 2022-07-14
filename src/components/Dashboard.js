@@ -1,21 +1,51 @@
-import React,{useContext} from 'react'
+import React,{useContext, useEffect, useState} from 'react'
 import Table from 'react-bootstrap/Table'
 import Button from 'react-bootstrap/Button';
 import {useNavigate} from 'react-router-dom';
-import {StudentContext} from '../App';
+import {url,StudentContext} from '../App';
+import axios from 'axios';
 
 function Dashboard() {
 
-    let context = useContext(StudentContext);
-
-    // console.log("Context",context)
-
+    let context = useContext(StudentContext)
     let navigate = useNavigate();
-    let handleDelete = (i)=>{
-        let students = [...context.students];
-        students.splice(i,1);
-        context.setStudents(students)
+    let [data,setData] = useState([]);
+
+    useEffect(()=>{
+        getData()
+    },[])
+
+    let getData = async ()=>{
+       let res = await axios.get(url)
+       setData(res.data)
     }
+
+    let handleDelete = async(i)=>{
+        try
+        {
+            await axios.delete(`${url}/${i}`)
+        }
+        catch(error)
+        {
+            console.log(error)
+        }
+        getData()
+    }
+    
+    // let getData = ()=>{
+    //     fetch(url)
+    // .then((res)=>res.json())
+    // .then((response)=>{
+    //     setData(response)
+    // })
+    // .catch((err)=>console.log(err))
+    // }
+    // let handleDelete = (i)=>{
+    //     fetch(`${url}/${i}`,{method:'DELETE'})
+    //     .then((res)=>res.json())
+    //     .then((res)=>getData())
+    //     .catch((err)=>console.log(err))
+    // }
   return <>
     <div id="content-wrapper" className="d-flex flex-column container-fluid">
 
@@ -142,17 +172,17 @@ function Dashboard() {
       </thead>
       <tbody>
         {
-            context.students.map((e,i)=>{
-                return <tr key={i}>
-                    <td>{i+1}</td>
+            data.map((e)=>{
+                return <tr key={e.id}>
+                    <td>{e.id}</td>
                     <td>{e.name}</td>
                     <td>{e.email}</td>
                     <td>{e.mobile}</td>
                     <td>{e.batch}</td>
                     <td>
-                        <Button variant="primary" onClick={()=>navigate(`/edit-student/${i}`)}>Edit</Button>
+                        <Button variant="primary" onClick={()=>navigate(`/edit-student/${e.id}`)}>Edit</Button>
                         &nbsp;&nbsp;
-                        <Button variant="danger" onClick={()=>handleDelete(i)}>Delete</Button>
+                        <Button variant="danger" onClick={()=>handleDelete(e.id)}>Delete</Button>
                     </td>
                 </tr>
             })

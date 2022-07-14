@@ -1,35 +1,31 @@
-import React,{useState,useContext}  from 'react'
+import React,{useState}  from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import {useNavigate} from 'react-router-dom';
-import {StudentContext} from '../App'
+import {url} from '../App'
+import axios from 'axios'
 
 function CreateStudent() {
 
-  let context = useContext(StudentContext)
   let [name,setName] = useState("");
   let [email,setEmail] = useState("");
   let [mobile,setMobile] = useState("");
   let [batch,setBatch] = useState("");
   let navigate = useNavigate();
 
-  let handleSubmit = ()=>{
+  let handleSubmit = async ()=>{
       let data = {
         name,
         email,
         mobile,
         batch
       }
-      // let students = props.data.students;
-      // students.push(data)
-      // props.data.setStudents(students)
-
-      let students = [...context.students];
-      students.push(data)
-      context.setStudents(students)
+     
+      let res = await axios.post(url,data);
 
       //Just to jump to different route
-      navigate('/dashboard')
+      if(res.status===201)
+        navigate('/dashboard')
   }
 
   return <>

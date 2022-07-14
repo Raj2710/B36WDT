@@ -14,6 +14,8 @@ function reduce(state,action){
         case 'increment': return {count:state.count+1,name:'raj'};
 
         case 'change-name': return {count:state.count,name:'Naga'};
+
+        default: {}
     }
 
 }

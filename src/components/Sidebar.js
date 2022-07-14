@@ -1,4 +1,4 @@
-import React,{useContext} from 'react'
+import React from 'react'
 import {Link} from 'react-router-dom'
 // import {StudentContext} from '../App'
 
@@ -46,7 +46,7 @@ function Sidebar() {
 
     <div className="nav-link collapsed">
         <i className="fas fa-fw fa-cog"></i>
-        <a href='http://www.fb.com' target={"_blank"} style={{"color":"white"}}>Facebook</a>
+        <a href='http://www.fb.com' rel="noreferrer" target={"_blank"} style={{"color":"white"}}>Facebook</a>
     </div>
 
 

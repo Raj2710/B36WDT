@@ -1,47 +1,43 @@
-import React,{useState,useContext, useEffect}  from 'react'
+import React,{useState, useEffect}  from 'react'
 import Form from 'react-bootstrap/Form'
 import Button from 'react-bootstrap/Button'
 import {useNavigate,useParams} from 'react-router-dom';
-import {StudentContext} from '../App'
+import {url} from '../App'
+import axios from 'axios';
 
 function EditStudent() {
   let params = useParams();
 
-  let context = useContext(StudentContext);
-  let [name,setName] = useState(context.students[params.id].name);
-  let [email,setEmail] = useState(context.students[params.id].email);
-  let [mobile,setMobile] = useState(context.students[params.id].mobile);
-  let [batch,setBatch] = useState(context.students[params.id].batch);
+  let [name,setName] = useState("");
+  let [email,setEmail] = useState("");
+  let [mobile,setMobile] = useState("");
+  let [batch,setBatch] = useState("");
 
+  useEffect(()=>{
+    getData()
+  },[])
 
-
-  // useEffect(()=>{
-  //     setName(context.students[params.id].name)
-  //     setEmail(context.students[params.id].email)
-  //     setMobile(context.students[params.id].mobile)
-  //     setBatch(context.students[params.id].batch)
-
-  //     console.log("Use effect called")
-  // },[batch])
+  let getData = async ()=>{
+    let res = await axios.get(`${url}/${params.id}`)
+    setName(res.data.name)
+    setEmail(res.data.email)
+    setMobile(res.data.mobile)
+    setBatch(res.data.batch)
+  }
 
   let navigate = useNavigate();
 
-  let handleSubmit = ()=>{
+  let handleSubmit = async ()=>{
       let data = {
         name,
         email,
         mobile,
         batch
       }
-
-      let students = [...context.students]
-
-      students.splice(params.id,1,data)
-
-      context.setStudents(students)
-      
+      let res = await axios.put(`${url}/${params.id}`,data)
       //Just to jump to different route
-      navigate('/dashboard')
+      if(res.status===200)
+        navigate('/dashboard')
   }
 
   return <>
