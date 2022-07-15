@@ -6,6 +6,9 @@ import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom';
 import CreateStudent from './components/CreateStudent';
 import EditStudent from './components/EditStudent';
 import HooksDemo from './components/HooksDemo';
+import Ref from './components/Ref';
+import Memo from './components/Memo';
+import Reduce from './components/Reduce';
 export const url = 'https://61ee1f7ed593d20017dbac50.mockapi.io/students'
 
 export const StudentContext = React.createContext();
@@ -53,7 +56,11 @@ function App() {
               <Route path='dashboard' element={<Dashboard/>}/>
               <Route path='create-student' element={<CreateStudent/>}/>
               <Route path='edit-student/:id' element={<EditStudent/>}/>
-              <Route path='hooks-demo' element={<HooksDemo/>}/>
+              <Route path='hooks-demo' element={<HooksDemo/>}>
+                  <Route path='ref' element={<Ref/>}/>
+                  <Route path='memo' element={<Memo/>}/>
+                  <Route path='reduce' element={<Reduce/>}/>
+              </Route>
               <Route path='*' element={<Navigate to='/dashboard'/>}/>
           </Routes>
         </StudentContext.Provider>

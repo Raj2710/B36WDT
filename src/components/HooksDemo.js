@@ -1,43 +1,26 @@
 import React,{useReducer} from 'react'
 import Button from 'react-bootstrap/Button';
-import Memo from './Memo';
-import Ref from './Ref';
-
-const initialVlaue = {count:0,name:'raj'};
-
-
-function reduce(state,action){
-
-    switch(action.type){
-        case 'decrement': return {count:state.count-1,name:'raj'};
-
-        case 'increment': return {count:state.count+1,name:'raj'};
-
-        case 'change-name': return {count:state.count,name:'Naga'};
-
-        default: {}
-    }
-
-}
+import { Outlet,useNavigate,Link } from 'react-router-dom';
 
 function HooksDemo() {
-    const [state,dispatch] = useReducer(reduce,initialVlaue)
-  return <>
-   <div> 
-    <div>
-    <Button variant='primary' onClick={()=>dispatch({type:'increment'})}>+</Button>
-    &nbsp;
-    <span>{state.count}</span>
-    &nbsp;
-    <Button variant='primary' onClick={()=>dispatch({type:'decrement'})}>-</Button>
-    </div>
-    <div>
-    <Button variant='primary' onClick={()=>dispatch({type:'change-name',productID:'123',alterName:"iPhone 14"})}>Change Name</Button>
-    <div>{state.name}</div>
-    </div>
-    <Memo/>
 
-    <Ref/>
+  let navigate = useNavigate();
+  return <>
+   <div>
+
+    <Button variant='primary' onClick={()=>navigate('reduce')}>useReduce</Button>
+    &nbsp;
+    <Link to ='/hooks-demo/ref'>
+      <Button variant='primary'>useRef</Button>
+    </Link>
+    &nbsp;
+    <Button variant='primary' onClick={()=>navigate('memo')}>useMemo</Button>
+    <hr/>
+    <h3>Child Component</h3>
+    <hr/>
+   <div><Outlet/></div>
+    
+
     </div>
   </>
 }
