@@ -95,6 +95,42 @@ router.put('/edit-user/:id', async(req, res)=> {
   }
 });
 
+router.put('/edit-password/:id',async(req,res)=>{
+  await client.connect();
+  try {
+    let db = await client.db(dbName)
+    let pwd = await db.collection('users').find({_id:mongodb.ObjectId(req.params.id)}).toArray();
+    if(pwd[0].password===req.body.oldPassword)
+    {
+        if(req.body.newPassword===req.body.confirmPassword)
+        {
+            let user = await db.collection('users').updateOne({_id:mongodb.ObjectId(req.params.id)},{$set:{password:req.body.newPassword}})
+            res.send({statusCode:200,message:"Password Updated Successfully"})
+        }
+        else{
+          res.send({statusCode:400,message:"New and Confirm Password does not match"
+          })
+        }
+    }
+    else{
+      res.send({
+        statusCode:400,
+        message:"Old Password does not match"
+      })
+    }
+  } catch (error) {
+    console.log(error)
+    res.send({ 
+      statusCode:500,
+      message:"Internal Server Error",
+      error
+    })
+  }
+  finally{
+    client.close()
+  }
+})
+
 router.delete('/delete-user/:id', async(req, res)=> {
   await client.connect();
   try {
