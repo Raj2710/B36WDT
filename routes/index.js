@@ -17,17 +17,12 @@ router.get('/all',async(req,res)=>{
 
     } catch (error) {
       console.log(error)
-      res.send({ 
-        statusCode:500,
-        message:"Internal Server Error",
-        error
-      })
+      res.send({statusCode:500,message:"Internal Server Error",error})
     }
 })
 
 router.post('/add-user',async(req,res)=>{
   try {
-
     let users = await UserDetails.create(req.body);
     res.send({
       statusCode:200,
@@ -36,11 +31,7 @@ router.post('/add-user',async(req,res)=>{
 
   } catch (error) {
     console.log(error)
-    res.send({ 
-      statusCode:500,
-      message:"Internal Server Error",
-      error
-    })
+    res.send({statusCode:500,message:"Internal Server Error",error})
   }
 })
 
