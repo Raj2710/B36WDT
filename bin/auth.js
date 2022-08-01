@@ -17,24 +17,45 @@ const hashCompare = async (password,hashedPassword)=>{
 
 const createToken = async ({email,mobile,role})=>{
     let token = await jwt.sign({email,mobile,role},secretKey,{expiresIn:'1m'})
-    console.log(token);
     return token   
 }
 
 const decodeToken = async(token)=>{
     let data = await jwt.decode(token)
-    let currectTime = +new Date
-    if(Math.round(currectTime/1000)<data.exp)
-        return {
-            email:data.email,
-            role:data.role,
-            validity:true
-        }
+    return data
+}
+
+const validity = async(req,res,next)=>{
+    let token = req.headers.authorization.split(' ')[1];
+    let data = await jwt.decode(token)
+    if((Math.round(+Date.now()/1000))<=data.exp)
+    {
+        next()
+    }
     else
-        return {
-            validity:false
-        }
+    {
+        res.send({
+            statusCode:401,
+            message:"Token Expired"
+        })
+    }
+}
+
+const roleAdmin = async(req,res,next)=>{
+    let token = req.headers.authorization.split(' ')[1];
+    let data = await jwt.decode(token)
+    if(data.role=='Admin')
+    {
+        next()
+    }
+    else
+    {
+        res.send({
+            statusCode:401,
+            message:"Only Admin can access this resource"
+        })
+    }
 }
 
 
-module.exports ={hashPassword,hashCompare,createToken,decodeToken}
+module.exports ={hashPassword,hashCompare,createToken,decodeToken,validity,roleAdmin}

@@ -1,43 +1,31 @@
 var express = require('express');
 var router = express.Router();
 const {dbName,dbUrl,mongodb,MongoClient} = require('../dbConfig');
-const {hashPassword,hashCompare,createToken,decodeToken} = require('../bin/auth');
+const {hashPassword,hashCompare,createToken,decodeToken,validity,roleAdmin} = require('../bin/auth');
 
 const client = new MongoClient(dbUrl);
 
 //access this only if token exists
-router.get('/all', async(req, res)=> {
+router.get('/all',validity,async(req, res)=> {
   await client.connect();
   try {
     let token = req.headers.authorization.split(' ')[1];
-
     let data = await decodeToken(token)
-    if(data.validity)
+    const db = await client.db(dbName);
+    let user = await db.collection('users').findOne({email:data.email,role:data.role}); 
+    if(user)
     {
-        const db = await client.db(dbName);
-
-      let user = await db.collection('users').findOne({email:data.email,role:data.role});
-      
-      if(user)
-      {
-          let users = await db.collection('users').find().toArray()
-          res.send({
-            statusCode: 200,
-            users
-          })
-      }
-      else
-      {
+        let users = await db.collection('users').find().toArray()
         res.send({
-          statusCode: 401,
-          message:'Invalid Token'
+          statusCode: 200,
+          users
         })
-      }
     }
-    else{
+    else
+    {
       res.send({
         statusCode: 401,
-        message:'Token Expired'
+        message:'Unauthorized'
       })
     }
   } catch (error) {
@@ -54,7 +42,7 @@ router.get('/all', async(req, res)=> {
 });
 
 
-router.get('/:id', async(req, res)=> {
+router.get('/:id',validity, async(req, res)=> {
   await client.connect();
   try {
     const db = await client.db(dbName);
@@ -95,7 +83,7 @@ router.post('/add-user', async(req, res)=> {
     else
     {
       res.send({
-        statusCode: 200,
+        statusCode: 400,
         message:"User Already Exists, Kindly Login!"
       })
     }
@@ -166,7 +154,7 @@ router.post('/login', async(req, res)=> {
 });
 
 
-router.put('/edit-user/:id', async(req, res)=> {
+router.put('/edit-user/:id',validity, async(req, res)=> {
   await client.connect();
   try {
     const db = await client.db(dbName);
@@ -189,7 +177,7 @@ router.put('/edit-user/:id', async(req, res)=> {
   }
 });
 
-router.put('/edit-password/:id',async(req,res)=>{
+router.put('/edit-password/:id',validity,async(req,res)=>{
   await client.connect();
   try {
     let db = await client.db(dbName)
@@ -225,7 +213,7 @@ router.put('/edit-password/:id',async(req,res)=>{
   }
 })
 
-router.delete('/delete-user/:id', async(req, res)=> {
+router.delete('/delete-user/:id',validity, async(req, res)=> {
   await client.connect();
   try {
     const db = await client.db(dbName);
