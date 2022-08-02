@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button'
 import {useNavigate,useParams} from 'react-router-dom';
 import {url} from '../App'
 import axios from 'axios';
+import Sidebar from './Sidebar';
 
 function EditStudent() {
   let params = useParams();
@@ -41,7 +42,8 @@ function EditStudent() {
   }
 
   return <>
-    <div>
+    <Sidebar/>
+    <div id="content-wrapper" className="d-flex flex-column container-fluid">
     <Form>
         <Form.Group className="mb-3" >
           <Form.Label>Name</Form.Label>

@@ -1,6 +1,5 @@
 import './App.css';
 import React,{ useState } from 'react';
-import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import {BrowserRouter,Routes,Route,Navigate} from 'react-router-dom';
 import CreateStudent from './components/CreateStudent';
@@ -9,7 +8,9 @@ import HooksDemo from './components/HooksDemo';
 import Ref from './components/Ref';
 import Memo from './components/Memo';
 import Reduce from './components/Reduce';
-export const url = 'https://61ee1f7ed593d20017dbac50.mockapi.io/students'
+import Login from './components/Login';
+import Register from './components/Register';
+export const url = 'http://localhost:8000/users'
 
 export const StudentContext = React.createContext();
 
@@ -50,18 +51,14 @@ function App() {
       {/* <Button variant='primary' onClick={()=>setStudents([...students])}>Click Here!</Button> */}
   
       <BrowserRouter>
-      <Sidebar/>
       <StudentContext.Provider value ={{data,students,setStudents}}>
           <Routes>
               <Route path='dashboard' element={<Dashboard/>}/>
               <Route path='create-student' element={<CreateStudent/>}/>
               <Route path='edit-student/:id' element={<EditStudent/>}/>
-              <Route path='hooks-demo' element={<HooksDemo/>}>
-                  <Route path='ref' element={<Ref/>}/>
-                  <Route path='memo' element={<Memo/>}/>
-                  <Route path='reduce' element={<Reduce/>}/>
-              </Route>
-              <Route path='*' element={<Navigate to='/dashboard'/>}/>
+              <Route path='/login' element={<Login/>}/>
+              <Route path='/register' element={<Register/>}/> 
+              <Route path='*' element={<Navigate to='/login'/>}/>
           </Routes>
         </StudentContext.Provider>
       </BrowserRouter>

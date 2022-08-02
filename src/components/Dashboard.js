@@ -4,6 +4,7 @@ import Button from 'react-bootstrap/Button';
 import {useNavigate} from 'react-router-dom';
 import {url,StudentContext} from '../App';
 import axios from 'axios';
+import Sidebar from './Sidebar';
 
 function Dashboard() {
 
@@ -47,6 +48,7 @@ function Dashboard() {
     //     .catch((err)=>console.log(err))
     // }
   return <>
+    <Sidebar/>
     <div id="content-wrapper" className="d-flex flex-column container-fluid">
 
 {/* <!-- Main Content --> */}

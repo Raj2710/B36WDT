@@ -6,6 +6,7 @@ import {url} from '../App'
 import axios from 'axios'
 import {useFormik} from 'formik';
 import * as yup from 'yup'
+import Sidebar from './Sidebar';
 
 function CreateStudent() {
 
@@ -17,7 +18,6 @@ function CreateStudent() {
     if(res.status===201)
       navigate('/dashboard')
   }
-
 
 
   const formik = useFormik({
@@ -38,7 +38,9 @@ function CreateStudent() {
     }
   })
   return <>
-    <div>
+  <Sidebar/>
+    <div id="content-wrapper" className="d-flex flex-column container-fluid">
+    
       <h1>Add Student Details</h1>
       <form onSubmit={formik.handleSubmit}>
         <div className='form-group'>
