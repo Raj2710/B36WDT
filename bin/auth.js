@@ -1,11 +1,9 @@
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
-const secretKey = "QwerTYUiop799654lKjhhagdfa"
-const saltRound = 10;
 
 
 const hashPassword = async (password)=>{
-    var salt = await bcrypt.genSalt(saltRound);
+    var salt = await bcrypt.genSalt(process.env.saltRound);
     // console.log("Salt",salt);
     return await bcrypt.hash(password,salt) 
 }
@@ -16,7 +14,8 @@ const hashCompare = async (password,hashedPassword)=>{
 
 
 const createToken = async ({email,mobile,role})=>{
-    let token = await jwt.sign({email,mobile,role},secretKey,{expiresIn:'1m'})
+    console.log(process.env.expiresIn)
+    let token = await jwt.sign({email,mobile,role},process.env.JWTsecretKey,{expiresIn:process.env.expiresIn})
     return token   
 }
 
