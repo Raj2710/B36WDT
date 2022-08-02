@@ -1,9 +1,9 @@
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
-
+const saltRound = 10
 
 const hashPassword = async (password)=>{
-    var salt = await bcrypt.genSalt(process.env.saltRound);
+    var salt = await bcrypt.genSalt(saltRound);
     // console.log("Salt",salt);
     return await bcrypt.hash(password,salt) 
 }

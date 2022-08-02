@@ -65,7 +65,7 @@ router.get('/:id',validity, async(req, res)=> {
 });
 
 //sign-up
-router.post('/add-user', async(req, res)=> {
+router.post('/register', async(req, res)=> {
   await client.connect();
   try {
     const db = await client.db(dbName);
@@ -122,7 +122,8 @@ router.post('/login', async(req, res)=> {
         res.send({
           statusCode: 200,
           message:"User Logged in Successfully",
-          token
+          token,
+          role:user.role
         })
       }
       else
@@ -154,7 +155,7 @@ router.post('/login', async(req, res)=> {
 });
 
 
-router.put('/edit-user/:id',validity, async(req, res)=> {
+router.put('/edit-user/:id',validity, roleAdmin, async(req, res)=> {
   await client.connect();
   try {
     const db = await client.db(dbName);
@@ -177,7 +178,7 @@ router.put('/edit-user/:id',validity, async(req, res)=> {
   }
 });
 
-router.put('/edit-password/:id',validity,async(req,res)=>{
+router.put('/edit-password/:id',validity, roleAdmin,async(req,res)=>{
   await client.connect();
   try {
     let db = await client.db(dbName)
@@ -213,7 +214,7 @@ router.put('/edit-password/:id',validity,async(req,res)=>{
   }
 })
 
-router.delete('/delete-user/:id',validity, async(req, res)=> {
+router.delete('/delete-user/:id',validity,roleAdmin, async(req, res)=> {
   await client.connect();
   try {
     const db = await client.db(dbName);
