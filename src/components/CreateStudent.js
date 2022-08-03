@@ -1,22 +1,37 @@
-import React,{useState}  from 'react'
-import Form from 'react-bootstrap/Form'
-import Button from 'react-bootstrap/Button'
+import React,{useEffect,useState}  from 'react'
 import {useNavigate} from 'react-router-dom';
 import {url} from '../App'
 import axios from 'axios'
 import {useFormik} from 'formik';
 import * as yup from 'yup'
 import Sidebar from './Sidebar';
+import {validate} from '../common/common'
 
 function CreateStudent() {
 
   let navigate = useNavigate();
+  let [message,setMessage] = useState("");
+
+  useEffect(()=>{
+    if(validate()){}
+    else
+        navigate('/login')
+},[])
 
   let handleSubmit = async(data)=>{
-
-    let res = await axios.post(url,data)
-    if(res.status===201)
+    setMessage("")
+    
+    data.role = 'student'
+    console.log(data)
+    let res = await axios.post(`${url}/register`,data)
+    if(res.data.statusCode === 200)
+    {
       navigate('/dashboard')
+    }
+    else
+    {
+      setMessage(res.data.message)
+    }
   }
 
 
@@ -24,14 +39,14 @@ function CreateStudent() {
     initialValues:{
       name:"",
       email:"",
-      batch:"",
+      password:"",
       mobile:""
     },
     validationSchema: yup.object({
       name:yup.string().required('* Required'),
       email:yup.string().email('Enter a valid email').required('* Required'),
       mobile:yup.string().matches(/^\d{10}$/, "Enter a valid Mobile number").required('* Required'),
-      batch:yup.string().max(10,'Maximum character allowed is 10').min(2,'Minimum Character Should be 2').required('* Required')
+      password:yup.string().required('* Required')
     }),
     onSubmit:values=>{
       handleSubmit(values)
@@ -89,24 +104,25 @@ function CreateStudent() {
         </div>
 
         <div className='form-group'>
-          <label htmlFor='name'>Batch</label>
+          <label htmlFor='name'>Password</label>
           <input
-            id='batch'
-            name='batch'
-            type='text'
+            id='password'
+            name='password'
+            type='password'
             className='form-control'
-            placeholder='Batch'
+            placeholder='Password'
             onChange={formik.handleChange}
             onBlur={formik.handleBlur}
-            value={formik.values.batch}
+            value={formik.values.password}
           />
-          {formik.touched.batch && formik.errors.batch?(<div style={{"color":"red"}}>{formik.errors.batch}</div>):null}
+          {formik.touched.password && formik.errors.password?(<div style={{"color":"red"}}>{formik.errors.password}</div>):null}
         </div>
 
         <div className="form-group">
             <button type="submit" className="btn btn-primary">Submit</button>
         </div>
       </form>
+      {message?<div style={{"color":"red"}}>{message}</div>:<></>}
     </div>
   </>
 }

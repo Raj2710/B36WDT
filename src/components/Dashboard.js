@@ -5,32 +5,60 @@ import {useNavigate} from 'react-router-dom';
 import {url,StudentContext} from '../App';
 import axios from 'axios';
 import Sidebar from './Sidebar';
+import {validate} from '../common/common'
 
 function Dashboard() {
 
     let context = useContext(StudentContext)
     let navigate = useNavigate();
+    let [role] = useState(window.sessionStorage.getItem('role'));
     let [data,setData] = useState([]);
 
     useEffect(()=>{
-        getData()
+        if(validate())
+            getData()
+        else
+            navigate('/login')
     },[])
 
     let getData = async ()=>{
-       let res = await axios.get(url)
-       setData(res.data)
+        let token = window.sessionStorage.getItem('token');
+       let res = await axios.get(`${url}/all`,{
+        headers: {authorization:`Bearer ${token}`}
+       })
+
+       if(res.data.statusCode === 200)
+            setData(res.data.users)
+       else if(res.data.statusCode === 401){
+            alert(res.data.message)
+            navigate('/login')
+       }
     }
 
-    let handleDelete = async(i)=>{
+    let handleDelete = async(id)=>{
         try
         {
-            await axios.delete(`${url}/${i}`)
+            let token = window.sessionStorage.getItem('token');
+            let res = await axios.delete(`${url}/delete-user/${id}`,{headers:{authorization:`Bearer ${token}`}})
+
+            if(res.data.statusCode === 200)
+            {
+                setData(res.data.users)
+            }
+            else if(res.data.statusCode === 401)
+            {
+                alert(res.data.message)
+                navigate('/login')
+            }
+            else
+            {
+                alert(res.data.message)
+            }
         }
         catch(error)
         {
             console.log(error)
         }
-        getData()
     }
     
     // let getData = ()=>{
@@ -168,24 +196,26 @@ function Dashboard() {
           <th>Name</th>
           <th>Email</th>
           <th>Mobile</th>
-          <th>Batch</th>
-          <th>Action</th>
+          <th>Role</th>
+          {role==='Admin'?<th>Action</th>:null}
         </tr>
       </thead>
       <tbody>
         {
-            data.map((e)=>{
-                return <tr key={e.id}>
-                    <td>{e.id}</td>
+            data.map((e,i)=>{
+                return <tr key={e._id}>
+                    <td>{i+1}</td>
                     <td>{e.name}</td>
                     <td>{e.email}</td>
                     <td>{e.mobile}</td>
-                    <td>{e.batch}</td>
-                    <td>
-                        <Button variant="primary" onClick={()=>navigate(`/edit-student/${e.id}`)}>Edit</Button>
+                    <td>{e.role}</td>
+                    {
+                        role==='Admin'?<td>
+                        <Button variant="primary" onClick={()=>navigate(`/edit-student/${e._id}`)}>Edit</Button>
                         &nbsp;&nbsp;
-                        <Button variant="danger" onClick={()=>handleDelete(e.id)}>Delete</Button>
-                    </td>
+                        <Button variant="danger" onClick={()=>handleDelete(e._id)}>Delete</Button>
+                    </td>:null
+                    }
                 </tr>
             })
         }

@@ -10,7 +10,7 @@ import Memo from './components/Memo';
 import Reduce from './components/Reduce';
 import Login from './components/Login';
 import Register from './components/Register';
-export const url = 'http://localhost:8000/users'
+export const url = 'https://fsdbe.herokuapp.com/users'
 
 export const StudentContext = React.createContext();
 

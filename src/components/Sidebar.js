@@ -1,10 +1,17 @@
 import React from 'react'
-import {Link} from 'react-router-dom'
+import {Link,useNavigate} from 'react-router-dom'
 // import {StudentContext} from '../App'
 
 function Sidebar() {
     // let context = useContext(StudentContext)
     // console.log("Sidebar",context)
+    let navigate = useNavigate();
+
+
+    let logout = ()=>{
+        window.sessionStorage.clear()
+        navigate('/login')
+    }
   return<div>
         <ul className="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
@@ -47,6 +54,15 @@ function Sidebar() {
     <div className="nav-link collapsed">
         <i className="fas fa-fw fa-cog"></i>
         <a href='http://www.fb.com' rel="noreferrer" target={"_blank"} style={{"color":"white"}}>Facebook</a>
+    </div>
+
+
+</li>
+<li className="nav-item">
+
+    <div className="nav-link collapsed" style={{"cursor":"pointer"}}>
+    <i class="fa-solid fa-right-from-bracket"></i>
+        <span onClick={logout}>Logout</span>
     </div>
 
 
