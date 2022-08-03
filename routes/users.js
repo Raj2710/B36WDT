@@ -46,7 +46,7 @@ router.get('/:id',validity, async(req, res)=> {
   await client.connect();
   try {
     const db = await client.db(dbName);
-    let users = await db.collection('users').find({_id: mongodb.ObjectId(req.params.id)}).toArray();
+    let users = await db.collection('users').findOne({_id: mongodb.ObjectId(req.params.id)});
     res.send({
       statusCode: 200,
       users
@@ -218,7 +218,7 @@ router.delete('/delete-user/:id',validity,roleAdmin, async(req, res)=> {
   await client.connect();
   try {
     const db = await client.db(dbName);
-    await db.collection('users').deleteOne({_id:mongodb.ObjectId(req.params.id)})
+    await db.collection('users').deleteOne({$and:[{_id:mongodb.ObjectId(req.params.id)},{role:'student'}]})
     let users = await db.collection('users').find().toArray();
     res.send({
       statusCode: 200,
