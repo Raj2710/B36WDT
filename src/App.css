@@ -1,0 +1,11 @@
+.login-wrapper{
+    width: 50%;
+    margin: auto;
+}
+
+@media (max-width:700px){
+    .login-wrapper{
+        width: 80%;
+        margin: auto;
+    }
+}
