@@ -14,6 +14,8 @@ const UserSchema = new mongoose.Schema({
     },
     password:{type:String,required:true},
     role:{type:String,default:'user'},
+    emailVerify:{type:String,default:"N"},
+    tempOTP:{type:String,default:null},
     createdAt:{type:String,default:new Date()}
 },{collection:'users',versionKey:false})
 
