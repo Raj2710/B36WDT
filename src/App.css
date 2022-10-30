@@ -9,3 +9,9 @@
         margin: auto;
     }
 }
+
+.add-user{
+    display: flex;
+    flex-direction: row-reverse;
+    margin:10px;
+}

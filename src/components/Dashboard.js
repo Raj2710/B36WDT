@@ -1,10 +1,14 @@
-import React,{useEffect,useState} from 'react'
+import React,{useEffect,useState,useCallback} from 'react'
 import {useNavigate} from 'react-router-dom'
 import { ToastContainer, toast } from 'react-toastify';
 import Button from 'react-bootstrap/Button';
 import {env} from '../enviroinment'
 import axios from 'axios'
 import Table from 'react-bootstrap/Table';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import PersonAddAltIcon from '@mui/icons-material/PersonAddAlt';
+import LogoutIcon from '@mui/icons-material/Logout';
 
 function Dashboard() {
 
@@ -30,7 +34,7 @@ function Dashboard() {
             {
                 toast.error(res.data.message)
                 setTimeout(()=>{
-                    navigate('/login')
+                    logout()
                 },3000)
             }
         }
@@ -38,16 +42,26 @@ function Dashboard() {
         {
             toast.error("No Token Found!")
             setTimeout(()=>{
-                navigate('/login')
+                logout()
             },3000)
         }
     }
+    let logout = useCallback(()=>{
+        sessionStorage.clear()
+        navigate('/login')
+    })
+    
     useEffect(()=>{
         loadData()
-    },[])
+    },[loadData])
   return (
     <div>
         <h1 style={{"textAlign":"center"}}>Dashboard</h1>
+        <div className='add-user'>
+            <Button variant='danger' onClick={()=>logout()}><LogoutIcon/></Button>
+            &nbsp;
+            <Button variant='success'><PersonAddAltIcon/> Add User</Button>
+        </div>
         <Table striped bordered hover>
       <thead>
         <tr>
@@ -56,6 +70,7 @@ function Dashboard() {
           <th>Last Name</th>
           <th>Email</th>
           <th>Role</th>
+          <th>Actions</th>
         </tr>
       </thead>
       <tbody>
@@ -67,6 +82,7 @@ function Dashboard() {
                         <td>{e.lastName}</td>
                         <td>{e.email}</td>
                         <td>{e.role}</td>
+                        <td><Button variant='warning'><EditIcon/> Edit</Button> &nbsp; <Button variant='danger'><DeleteIcon/> Delete</Button></td>
                     </tr>
                 })
             }
